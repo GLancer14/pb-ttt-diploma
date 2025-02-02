@@ -106,12 +106,10 @@ function checkForWin(rowNumber, columnNumber, boardSize, playerSymbol) {
 }
 
 function checkForDraw() {
-  let successCheckCount = 0;
-  let checkCount = 0;
   const boardSize = board.length;
   // Проверка строк
   for (const boardRow of board) {
-    if (checkDirection(boardRow)) return;
+    if (!checkDirection(boardRow)) return;
   }
 
   // Проверка столбцов
@@ -121,7 +119,7 @@ function checkForDraw() {
       boardColumn.push(board[j][i]);
     }
     
-    if (checkDirection(boardColumn)) return;
+    if (!checkDirection(boardColumn)) return;
   }
 
   // Проверка первой диагонали
@@ -130,7 +128,7 @@ function checkForDraw() {
     boardDiagonalLeftToRight.push(board[i][i]);
   }
 
-  if (checkDirection(boardDiagonalLeftToRight)) return;
+  if (!checkDirection(boardDiagonalLeftToRight)) return;
 
   // Проверка второй диагонали
   const boardDiagonalRightToLeft = [];
@@ -138,20 +136,14 @@ function checkForDraw() {
     boardDiagonalRightToLeft.push(board[(boardSize - 1) - i][i]);
   }
 
-  if (checkDirection(boardDiagonalRightToLeft)) return;
+  if (!checkDirection(boardDiagonalRightToLeft)) return;
 
   let header = modalEl.getElementsByTagName('h2')[0];
-  header.textContent = `🍾 Ничья! 🍾`;
+  header.textContent = ` Ничья! `;
   modalEl.classList.remove('hidden');
   return true;
 
   function checkDirection(directionCellsArray) {
-    checkCount++;
-    if (directionCellsArray.includes("x") && directionCellsArray.includes("o")) {
-      successCheckCount++;
-    }
-
-     // Проверка отсутствия превышения количества возможных победных ситуаций минус 1
-    return checkCount - successCheckCount > 1 ? true : false;
+    return directionCellsArray.includes("x") && directionCellsArray.includes("o");
   }
 }
